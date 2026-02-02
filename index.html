@@ -1,63 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Greece Property Intelligence – Chania</title>
-  <style>
-    body { font-family: system-ui, sans-serif; margin: 40px; background: #fafafa; }
-    .card { background: white; padding: 24px; border-radius: 8px; max-width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    h1 { margin-top: 0; }
-    .metric { display: flex; justify-content: space-between; margin: 8px 0; }
-    .signal { margin-top: 16px; padding: 12px; border-radius: 6px; background: #eee; }
-    .note { margin-top: 20px; color: #555; font-size: 14px; }
-  </style>
+<meta charset="UTF-8">
+<title>Flight Edge — Never Overpay for Flights</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  margin: 0;
+  background: linear-gradient(180deg, #f8fafc, #eef2ff);
+  color: #0f172a;
+}
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 60px 24px;
+}
+.hero {
+  text-align: center;
+}
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+.hero p {
+  font-size: 1.25rem;
+  color: #475569;
+}
+.cta {
+  margin-top: 32px;
+}
+.cta a {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  padding: 16px 28px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 10px 20px rgba(37,99,235,.25);
+}
+.cta a:hover {
+  background: #1d4ed8;
+}
+.section {
+  margin-top: 80px;
+}
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.05);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th, .table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+.badge {
+  background: #dc2626;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+}
+.good {
+  background: #16a34a;
+}
+.footer {
+  text-align: center;
+  margin-top: 80px;
+  color: #64748b;
+}
+</style>
 </head>
+
 <body>
+<div class="container">
 
-<div class="card">
-  <h1 id="city">City</h1>
-  <div id="date"></div>
+  <div class="hero">
+    <h1>Never overpay for the same flight ✈️</h1>
+    <p>
+      The exact same airline seat can cost 2–3× more on different websites.
+      We scan every seller and show you the cheapest one.
+    </p>
 
-  <h3>Market Snapshot</h3>
-  <div class="metric"><span>Listings tracked</span><span id="listings"></span></div>
-  <div class="metric"><span>Minimum price</span><span id="min"></span></div>
-  <div class="metric"><span>25th percentile</span><span id="p25"></span></div>
-  <div class="metric"><span>Median price</span><span id="median"></span></div>
-  <div class="metric"><span>75th percentile</span><span id="p75"></span></div>
-  <div class="metric"><span>Maximum price</span><span id="max"></span></div>
-
-  <div id="signalBox" class="signal"></div>
-
-  <div class="note">
-    Data updated daily.  
-    No listings. No ads. Built for foreign buyers.
+    <div class="cta">
+      <a href="https://t.me/Fli_ght_bot?start=check">
+        Check my flight
+      </a>
+    </div>
   </div>
+
+  <div class="section">
+    <div class="card">
+      <h2>Real example</h2>
+      <p>Tel Aviv → Rome, Feb 19–20. Same flight, different sellers:</p>
+
+      <table class="table">
+        <tr><th>Seller</th><th>Price</th></tr>
+        <tr><td>AirTickets24</td><td>€131 <span class="badge good">Cheapest</span></td></tr>
+        <tr><td>Expedia</td><td>€143</td></tr>
+        <tr><td>BudgetAir</td><td>€155</td></tr>
+        <tr><td>WizzAir (direct)</td><td>€333 <span class="badge">Overpriced</span></td></tr>
+      </table>
+
+      <p><strong>You save €202</strong> by booking the same seat from the cheapest seller.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="card">
+      <h2>How it works</h2>
+      <ol>
+        <li>You enter your route</li>
+        <li>We scan all sellers for the same flight</li>
+        <li>You book from the cheapest one</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="footer">
+    Built with real-time airline price intelligence.
+  </div>
+
 </div>
-
-<script>
-fetch("public_today.json")
-  .then(r => r.json())
-  .then(d => {
-    document.getElementById("city").innerText = d.city + " – Greece";
-    document.getElementById("date").innerText = "Snapshot: " + d.date;
-
-    document.getElementById("listings").innerText = d.aggregates.listings;
-    document.getElementById("min").innerText = "€" + d.aggregates.min.toLocaleString();
-    document.getElementById("p25").innerText = "€" + d.aggregates.p25.toLocaleString();
-    document.getElementById("median").innerText = "€" + d.aggregates.median.toLocaleString();
-    document.getElementById("p75").innerText = "€" + d.aggregates.p75.toLocaleString();
-    document.getElementById("max").innerText = "€" + d.aggregates.max.toLocaleString();
-
-    const box = document.getElementById("signalBox");
-    if (!d.signal) {
-      box.innerText = "Market signal: collecting history…";
-    } else {
-      box.innerText = `Market signal: ${d.signal.label}
-Median change: ${d.signal.p50_delta_pct.toFixed(2)}%
-Supply change: ${d.signal.supply_delta_pct.toFixed(2)}%`;
-    }
-  });
-</script>
-
 </body>
 </html>
